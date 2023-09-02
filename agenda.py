@@ -24,11 +24,27 @@ def adicionarContato() -> None:
 
 
 def editarContato() -> None:
-    pass
+    contato_selecionado = tabela.selection()
+    if not contato_selecionado:
+        return
+    index = tabela.index(contato_selecionado)
+    agenda[index] = {
+        "nome": txt_nome.get(),
+        "telefone": txt_telefone.get(),
+        "categoria": cb_categoria.get()
+    }
+    atualizarTabela()
+    limparCampos()
 
 
 def deletarContato() -> None:
-    pass
+    contato_selecionado = tabela.selection()[0]
+    if not contato_selecionado:
+        return
+    index = tabela.index(contato_selecionado)
+    del agenda[index]
+    limparCampos()
+    atualizarTabela()
 
 
 def limparCampos() -> None:
@@ -46,7 +62,7 @@ def atualizarTabela() -> None:
     for contato in agenda:
         tabela.insert("", END, values=(contato["nome"], contato["telefone"], contato["categoria"]))
 
-def tabelaClique(event) -> None:
+def tabelaClique(event) -> int or None:
     contato_selecionado = tabela.selection()
     if not contato_selecionado:
         return
@@ -58,6 +74,7 @@ def tabelaClique(event) -> None:
     txt_nome.insert(0, contato["nome"])
     txt_telefone.insert(0, contato["telefone"])
     cb_categoria.insert(0, contato["categoria"])
+
 
 
 # criando a janela
